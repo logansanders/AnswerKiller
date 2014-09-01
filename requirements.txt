@@ -1,0 +1,6 @@
+flask
+SQLAlchemy
+Flask-SQLALchemy
+Flask-WTF
+Flask-Admin
+WhooshAlchemy
