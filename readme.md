@@ -1,5 +1,6 @@
-SimpleStructure
-================
+Answer Killer
+===
 
-This is a basic structure for developing a Web APP with Admin control panel.
-------
+The APP providing the answers to most of the textbook questions.
+---
+
