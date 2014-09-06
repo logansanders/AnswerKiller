@@ -3,4 +3,5 @@ SQLAlchemy
 Flask-SQLALchemy
 Flask-WTF
 Flask-Admin
+Flask-Migrate
 WhooshAlchemy

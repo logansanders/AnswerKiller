@@ -1,0 +1,69 @@
+Users
+   id -- database ID
+   user_id -- actual ID
+   password
+   nickname
+   gender
+   balance
+   intro
+   email
+   school
+   grade
+   qq
+   permission [0-3]
+   
+Orders
+   id  -- database ID
+   order_id -- actual ID
+   customer_id
+   descr
+   amount
+   status
+   created_at
+   last_update
+
+Accepts
+   id
+   cs_id
+   customer_id
+   order_id
+
+Teaches
+   id
+   customer_id
+   order_id
+   tutor_id
+   hours
+
+Courses
+  id
+  name
+  desc
+  cover
+
+Textbooks
+  id
+  name
+  desc
+  cover
+
+Questions
+  id
+  page_no
+  chapter_no
+  question_no
+  intro
+  content
+  snapshots
+
+Answers
+  id
+  question_id
+  text
+  image_id
+  step
+  
+Images
+  id
+  path
+  size
