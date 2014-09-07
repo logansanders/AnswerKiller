@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-flask
-SQLAlchemy
-Flask-SQLALchemy
-Flask-WTF
-Flask-Admin
-Flask-Migrate
-=======
 flask==0.10
 SQLAlchemy==0.9.7
 Flask-SQLALchemy==2.0
 Flask-WTF==0.10.1
 Flask-Admin==1.0.8
 Flask-Login
->>>>>>> 8f18acf6e40627af1f1a40326f87b1436ade4a08
 WhooshAlchemy
