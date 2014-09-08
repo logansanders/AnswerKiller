@@ -9,7 +9,7 @@ class Course(db.Model, InnoDBMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     desc = db.Column(db.Text, nullable=True)
-    min_fee = db.Column(db.Float, nullable=False)
+    min_fee = db.Column(db.Float(precision=2), nullable=False)
     books = db.relationship('TextBook', backref='course')
 
     def __init__(self, name, min_fee):

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from answerkiller import db
 from answerkiller.models import InnoDBMixin
 
@@ -11,8 +12,9 @@ class Solving(db.Model, InnoDBMixin):
     created_at = db.Column(db.DateTime)
     deadline = db.Column(db.DateTime)
     last_update = db.Column(db.DateTime)
-    actual_hours = db.Column(db.Float)
-    status = db.Column(db.String(40))
+    actual_hours = db.Column(db.Float(precision=2))
+    status = db.Column(db.Enum('Completed', 'Created', 'Paid', 'Processing'))
+    permission_level = db.Column(db.Integer)
     tutor = db.relationship("Tutor", backref='solving')
 
 
@@ -23,7 +25,7 @@ class Account(db.Model, InnoDBMixin):
     nickname = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(80), unique=True, nullable=False)
     intro = db.Column(db.String(120))
-    gender = db.Column(db.String(10))
+    gender = db.Column(db.Enum(u'女生', u'男生'))
     password = db.Column(db.String(20), nullable=False)
     type = db.Column(db.String(20))
 
@@ -48,7 +50,7 @@ class Customer(Account):
         primary_key=True)   
     school = db.Column(db.String(120))
     grade = db.Column(db.String(20))
-    balance = db.Column(db.Float)
+    balance = db.Column(db.Float(precision=2))
     orders = db.relationship('Order', backref='owner')
 
     __mapper_args__ = {
@@ -64,7 +66,6 @@ class CustomerSupport(Account):
 
     username = db.Column(db.String(80), db.ForeignKey('accounts.username',
         onupdate="CASCADE", ondelete="CASCADE"), primary_key=True)
-    permission_level = db.Column(db.Integer)
     orders = db.relationship('Order', backref='customer')
 
     __mapper_args__ = {

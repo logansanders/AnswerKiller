@@ -1,5 +1,5 @@
 from flask import Blueprint, request, g
-from answerkiller import loginmanager
+from answerkiller import login_manager
 
 
 customer_bp = Blueprint('Customer')

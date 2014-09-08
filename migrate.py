@@ -1,18 +1,15 @@
-#from flask import Flask
-#from flask.ext.sqlalchemy import SQLAlchemy
-#from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
 from answerkiller import app, db
-'''
+
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
     manager.run()
-'''
-#db.drop_all()
-#db.create_all()
 
+'''
 def test_append():
     from answerkiller.models import course, order, user
     c = course.Course('Math', 50.2)
@@ -30,3 +27,4 @@ def test_append():
     #print db.session.query(order.Order).first()
 
 test_append()
+'''
