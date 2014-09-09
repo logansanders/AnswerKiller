@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, g, render_template, jsonify
+from flask import Blueprint, request, g, render_template, jsonify, \
+redirect, url_for, helpers
 from answerkiller import login_manager
 
 
-admin_bp = Blueprint('Admin', __name__, subdomain='admin')
+admin_bp = Blueprint('Admin', __name__, subdomain='admin',
+    template_folder='../templates/admin', static_folder='../templates/admin',
+    static_url_path='/')
 
 
 @admin_bp.route('/orders', methods=['GET'])
@@ -87,3 +90,17 @@ def users():
 @admin_bp.route('/textbooks/<id>/answers', methods=['POST'])
 def add_answer(id):
     pass
+
+############# Only For Debug ################################
+@admin_bp.route('/')
+def home():
+    return admin_bp.send_static_file('order_management.html')
+@admin_bp.route('/<path:path>')
+def page(path):
+    return admin_bp.send_static_file(path)
+@admin_bp.route('/test', methods=['POST'])
+def forms():
+    d = request.form
+    f= request.files
+    print f
+    return jsonify(d)
