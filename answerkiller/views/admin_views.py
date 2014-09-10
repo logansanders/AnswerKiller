@@ -2,6 +2,7 @@
 from flask import Blueprint, request, g, render_template, jsonify, \
 redirect, url_for, helpers
 from answerkiller import login_manager
+from answerkiller.models import course
 
 
 admin_bp = Blueprint('Admin', __name__, subdomain='admin',
@@ -36,6 +37,7 @@ def orders(order_id=None):
 
 @admin_bp.route('/orders', methods=['POST'])
 def create_order():
+
     request_body = {'name':'Geometrics', 'course':'Mathematics',
     'deadline':'2014-03-15 14:00:20','customer_id':'wangerqiang',
     'cs_id':'zhangsan','prepaid':80, 'description':'Be fast, blabla'
@@ -47,7 +49,27 @@ def create_order():
 @admin_bp.route('/courses', methods=['GET'])
 @admin_bp.route('/courses/<id>', methods=['GET'])
 def courses(id=None):
-    pass
+    resp = {}
+    if not id:
+        all_courses = course.Course.query.all()
+        resp['count'] = len(all_courses)
+        courses = []
+        for c in all_courses:
+            tmp = {}
+            tmp['min_fee'] = c.min_fee
+            tmp['id'] = c.id
+            tmp['name'] = c.name
+            tmp['desc'] = c.desc
+            courses.append(tmp)
+        resp['items'] = courses
+    else:
+        the_course = course.Course.query.filter_by(id=id).first()
+        resp['min_fee'] = c.min_fee
+        resp['name'] = c.name
+        resp['desc'] = c.desc
+
+    return jsonify(resp)
+
 
 
 @admin_bp.route('/courses', methods=['POST'])
@@ -61,16 +83,36 @@ def create_courses():
 
 @admin_bp.route('/courses/<id>', methods=['POST'])
 def edit_course(id):
-    request_body = {'id': '2','name':'Psychology', 'course':'Mathematics',
+    request_body = {'id': '2','name':'Psychology',
     'min_fee':80, 'description':'asodi sdjka jlsd  jxkuut ms djksd'
     }
+    the_course = course.Course.query.filter(id=id)
+    for key, value in request_body.items():
+        if not value:
+            continue
+        the_course[key] = value
+
     resp = {'id': '1', 'status': 'Success'}
     return jsonify(resp)
 
 
 @admin_bp.route('/courses/<id>/textbooks', methods=['POST'])
 def add_books(course_name):
-    pass
+    resp = {}
+    the_course = course.Course.query.filter(id=id).first()
+    all_books = the_course.books
+    resp['count'] = len(all_books)
+    books = []
+    for book in all_books:
+        tmp = {}
+        tmp['name'] = book.name
+        tmp['id'] = book.id
+        tmp['desc'] = book.desc
+        books.append(tmp)
+
+    resp['items'] = books
+    return jsonify(resp)
+
 
 
 @admin_bp.route('/users', methods=['GET'])
@@ -95,12 +137,15 @@ def add_answer(id):
 @admin_bp.route('/')
 def home():
     return admin_bp.send_static_file('order_management.html')
-@admin_bp.route('/<path:path>')
+@admin_bp.route('/<path:path>', methods=['GET', 'POST'])
 def page(path):
     return admin_bp.send_static_file(path)
 @admin_bp.route('/test', methods=['POST'])
 def forms():
+    '''
     d = request.form
     f= request.files
-    print f
-    return jsonify(d)
+    for value in f.values():
+        print value'''
+    d = type(course.Course.query)
+    return d
