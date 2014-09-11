@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, g, render_template, jsonify, \
 redirect, url_for, helpers
-from answerkiller import login_manager
+from flask.ext.login import login_required
 from answerkiller.models import course
 
 
@@ -136,16 +136,14 @@ def add_answer(id):
 ############# Only For Debug ################################
 @admin_bp.route('/')
 def home():
-    return admin_bp.send_static_file('order_management.html')
-@admin_bp.route('/<path:path>', methods=['GET', 'POST'])
-def page(path):
-    return admin_bp.send_static_file(path)
-@admin_bp.route('/test', methods=['POST'])
+    return admin_bp.send_static_file('login.html')
+@admin_bp.route('/test', methods=['POST','GET'])
+@login_required
 def forms():
-    '''
+    
     d = request.form
+    print d
     f= request.files
     for value in f.values():
-        print value'''
-    d = type(course.Course.query)
+        print value
     return d

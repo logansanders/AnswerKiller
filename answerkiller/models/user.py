@@ -14,7 +14,6 @@ class Solving(db.Model, InnoDBMixin):
     last_update = db.Column(db.DateTime)
     actual_hours = db.Column(db.Float(precision=2))
     status = db.Column(db.Enum('Completed', 'Created', 'Paid', 'Processing'))
-    permission_level = db.Column(db.Integer)
     tutor = db.relationship("Tutor", backref='solving')
 
 
@@ -27,6 +26,7 @@ class Account(db.Model, InnoDBMixin):
     intro = db.Column(db.String(120))
     gender = db.Column(db.Enum(u'女生', u'男生'))
     password = db.Column(db.String(20), nullable=False)
+    permission_level = db.Column(db.Integer)
     type = db.Column(db.String(20))
 
     __mapper_args__ = {
@@ -34,13 +34,26 @@ class Account(db.Model, InnoDBMixin):
         'polymorphic_on':type
     }
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, permission_level):
         self.username = username
         self.email = email
         self.password = password
+        self.permission_level = permission_level
 
     def __repr__(self):
         return '<Account %r>' % self.username
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.username
 
 
 class Customer(Account):
