@@ -141,12 +141,12 @@
                                             <div class="one-material">
                                                 <button type="button" class="btn btn-info add-material"><i class="fa fa-plus-circle"></i></button>
                                                 <div class="form-group">
-                                                    <label>教材</label>
-                                                    <input type="text" class="form-control" name="material[0][description]" placeholder="添加教材名称">
+                                                    <label for="material">教材</label>
+                                                    <input type="text" class="form-control" name="material[]" placeholder="添加教材名称">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>上传图片</label>
-                                                    <input type="file" name="material[0][picture]">
+                                                    <label for="picture">上传图片</label>
+                                                    <input type="file" name="picture[]">
                                                 </div>
                                             </div>
                                             
@@ -172,22 +172,17 @@
         <script type="text/javascript">
             $(document).ready(function(){
 
-                (function(){
-                        var index = 0;
-                         // add material
-                        $("body").delegate(".add-material","click",function(){
-                            index++;
-                            var $oneMaterialHtml = "<div class='one-material'><button type='button' class='btn btn-danger delete-material'><i class='fa fa-times-circle'></i></button><div class='form-group'><label>教材</label><input type='text' class='form-control' name='material["+index+"][description]' placeholder='添加教材名称'></div><div class='form-group'><label>上传图片</label><input type='file' name='material["+index+"][picture]'></div></div>";
-                            $(this).parents(".box-body").append($oneMaterialHtml);
-                        });
+                // add material
+                $("body").delegate(".add-material","click",function(){
+                    var $cloneAddMaterial = $(this).parent().clone();
+                    $cloneAddMaterial.find(".add-material").attr("class","btn btn-danger delete-material").find("i").attr("class","fa fa-times-circle");
+                    $(this).parents(".box-body").append($cloneAddMaterial);
+                });
 
-                        //delete material
-                        $("body").delegate(".delete-material","click",function(event){
-                            event.stopPropagation();
-                            index=index-1;
-                            $(this).parent().remove();
-                        });
-                })();
+                //delete material
+                $("body").delegate(".delete-material","click",function(){
+                    $(this).parent().remove();
+                });
 
             });
         </script>

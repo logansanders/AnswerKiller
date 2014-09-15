@@ -5,7 +5,7 @@ from flask.ext.login import login_required
 from answerkiller.models import course
 
 
-admin_bp = Blueprint('Admin', __name__, subdomain='admin',
+admin_bp = Blueprint('Admin', __name__,
     template_folder='../templates/admin', static_folder='../templates/admin',
     static_url_path='/')
 
@@ -77,6 +77,14 @@ def create_courses():
     request_body = {'id': '2', 'name':'Psychology', 'course':'Mathematics',
     'min_fee':80, 'description':'asodi sdjka jlsd  jxkuut ms djksd'
     }
+    name = request_body.get('course-name', None)
+    desc = request_body.get('course-description', None)
+    min_fee = request_body.get('lowest-cost', None)
+    the_course = course.Course(name=name, desc=desc, min_fee=min_fee)
+    books = request_body.getlist('material')
+    if books:
+        for book in books:
+            
     resp = {'id': '1', 'status': 'Success'}
     return jsonify(resp)
 
@@ -136,14 +144,11 @@ def add_answer(id):
 ############# Only For Debug ################################
 @admin_bp.route('/')
 def home():
-    return admin_bp.send_static_file('login.html')
+    return admin_bp.send_static_file('order_management.html')
 @admin_bp.route('/test', methods=['POST','GET'])
-@login_required
 def forms():
     
-    d = request.form
+    d = request.form.getlist('step[]')
     print d
-    f= request.files
-    for value in f.values():
-        print value
-    return d
+    f= request.files.getlist('picture[]')
+    return repr(f)

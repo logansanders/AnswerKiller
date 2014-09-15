@@ -3,9 +3,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 
 
-app = Flask(import_name=__name__, static_folder='views/static')
+app = Flask(import_name=__name__, static_folder='templates/admin', static_url_path='')
 app.config.from_pyfile('../etc/conf/debug.cfg')
-app.url_map.default_subdomain = "admin"
+from werkzeug import SharedDataMiddleware
+import os
+app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {'/css': os.path.join(os.path.dirname(__file__), 'tempaltes/admin/css')})
 
 db = SQLAlchemy(app)
 from answerkiller.models import user

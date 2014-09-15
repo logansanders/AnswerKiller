@@ -12,9 +12,11 @@ class Course(db.Model, InnoDBMixin):
     min_fee = db.Column(db.Float(precision=2), nullable=False)
     books = db.relationship('TextBook', backref='course')
 
-    def __init__(self, name, min_fee):
+    def __init__(self, name, min_fee, desc=None):
         self.name = name
         self.min_fee = min_fee
+        self.desc = desc
+
     def __repr__(self):
         return '<Course %r>, min fee %f' % (self.name, self.min_fee)
 
