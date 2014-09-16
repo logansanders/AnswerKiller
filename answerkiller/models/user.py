@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from answerkiller import db
 from answerkiller.models import InnoDBMixin
+from answerkiller.models.order import Order
 
 
 class Solving(db.Model, InnoDBMixin):

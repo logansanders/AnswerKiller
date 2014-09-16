@@ -1,5 +1,6 @@
 from answerkiller import db
 from answerkiller.models import InnoDBMixin
+from answerkiller.models.image import Image
 
 
 class Course(db.Model, InnoDBMixin):
@@ -29,10 +30,13 @@ class TextBook(db.Model, InnoDBMixin):
         ondelete="CASCADE"))
     name = db.Column(db.String(80), nullable=False)
     desc = db.Column(db.Text, nullable=True)
+ #   image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
+ #   image = db.relationship('Image')
     quetions = db.relationship('Question', backref='textbook')
     
-    def __init__(self, name):
+    def __init__(self, name, desc=None):
         self.name = name
+        self.desc = desc
 
     def __repr__(self):
         return '<TextBook %r>' % self.name
