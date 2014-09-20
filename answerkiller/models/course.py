@@ -30,9 +30,9 @@ class TextBook(db.Model, InnoDBMixin):
         ondelete="CASCADE"))
     name = db.Column(db.String(80), nullable=False)
     desc = db.Column(db.Text, nullable=True)
- #   image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
- #   image = db.relationship('Image')
-    quetions = db.relationship('Question', backref='textbook')
+    image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
+    image = db.relationship('Image')
+    questions = db.relationship('Question', backref='textbook')
     
     def __init__(self, name, desc=None):
         self.name = name
@@ -40,6 +40,9 @@ class TextBook(db.Model, InnoDBMixin):
 
     def __repr__(self):
         return '<TextBook %r>' % self.name
+
+    def _as_dict(self):
+        return {'name': self.name}
 
 
 class Question(db.Model, InnoDBMixin):
@@ -53,13 +56,15 @@ class Question(db.Model, InnoDBMixin):
     qno = db.Column(db.Integer, nullable=False)
     page = db.Column(db.Integer, nullable=True)
     content = db.Column(db.Text)
-    snapshots = db.Column(db.String(256))
+    #snapshots = db.relationship('Image')
     title = db.Column(db.String(140), nullable=True)
     desc = db.Column(db.Text, nullable=True)
     answers = db.relationship('Answer', backref='question')
 
-    def __init__(self, title):
-        self.title = title
+    def __init__(self, chapter, qno, page=None):
+        self.chapter = chapter
+        self.qno = qno
+        self.page = page
 
 
 class Answer(db.Model, InnoDBMixin):

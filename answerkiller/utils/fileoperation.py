@@ -1,6 +1,6 @@
 from answerkiller import app
 from werkzeug import secure_filename
-import os
+import os, base64
 
 
 ALLOWED_EXTENSIONS = app.config.get('ALLOWED_IMAGES', set([]))
@@ -12,7 +12,10 @@ def allowed_file(filename):
 
 def save_file(uploaded_file, subfolder=None):
     if uploaded_file and allowed_file(uploaded_file.filename):
-        filename = secure_filename(uploaded_file.filename)
+        filename, ext = secure_filename(uploaded_file.filename).split('.')
+        filename = base64.b64encode(filename)
+        filename += '.' + ext
+
         try:
             save_folder = os.path.join(app.config['UPLOAD_FOLDER'], subfolder)
             if not os.path.exists(save_folder):
@@ -30,9 +33,8 @@ def save_file(uploaded_file, subfolder=None):
 
 
 def resolve_conflict(folder, name):
-
     name, ext = name.split('.')
-    save_path = os.join(folder, name)+'_{n}.{ext}'
+    save_path = os.path.join(folder, name)+'_{n}.{ext}'
     n = 1
     tmp = save_path.format(n=n, ext=ext)
     while os.path.exists(tmp):
