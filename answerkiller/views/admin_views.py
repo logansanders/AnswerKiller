@@ -10,7 +10,7 @@ from answerkiller import db
 admin_bp = Blueprint('Admin', __name__,
                      template_folder='../templates/admin',
                      static_folder='../templates/admin',
-                     static_url_path='/', url_prefix='/services')
+                     static_url_path='')
 
 
 @admin_bp.route('/orders', methods=['GET'])
@@ -242,11 +242,13 @@ def home():
 
 @admin_bp.route('/test', methods=['POST', 'GET'])
 def forms():
-    #d = request.form.getlist('step[]')
-    #print d
-    '''fs = request.files.values()
+    d = request.form
+    print d
+    fs = request.files
     s = []
     print fs
-    for f in fs:
-      s.append(fileoperation.save_file(f, 'test'))'''
     return '<p><strong>long</strong></p>long'
+
+@admin_bp.route('/login', methods=['POST'])
+def login():
+  return 'Login Success'
