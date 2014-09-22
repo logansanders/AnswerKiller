@@ -19,7 +19,8 @@ admin_login_manager = LoginManager()
 
 @admin_login_manager.user_loader
 def load_user(username):
-    the_user = user.Account.query.filter_by(username=username)
+    print 'loading user'
+    the_user = user.Account.query.filter_by(username=username).first()
     if the_user.permission_level > 0:
         return the_user
     return None

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, render_template, jsonify, \
-    redirect, url_for, helpers
-from flask.ext.login import login_required
+    redirect, url_for, helpers, make_response
+from flask.ext.login import login_required, login_user
 from answerkiller.models import course, user, image, order
 from answerkiller.utils import fileoperation
 from answerkiller import db
@@ -237,12 +237,13 @@ def questions():
 
 @admin_bp.route('/')
 def home():
-    return admin_bp.send_static_file('order_management.html')
+    return admin_bp.send_static_file('login.html')
 
 
 @admin_bp.route('/test', methods=['POST', 'GET'])
+@login_required
 def forms():
-    d = request.form
+    d = request.cookies
     print d
     fs = request.files
     s = []
@@ -251,4 +252,11 @@ def forms():
 
 @admin_bp.route('/login', methods=['POST'])
 def login():
-  return 'Login Success'
+  username = request.form.get('userid')
+  u = user.Account.query.filter_by(username='k1xme@163.com').first()
+  db.session.add(u)
+  db.session.commit()
+  login_user(u)
+  resp = make_response(admin_bp.send_static_file('add_solution.html'))
+  resp.set_cookie('longkexi','long')
+  return resp
